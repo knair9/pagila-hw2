@@ -15,3 +15,17 @@
  * This is the last problem that will require you to use a particular method to solve the query.
  * In future problems, you may choose whether to use the LEFT JOIN or NOT IN clause if they are more applicable.
  */
+SELECT DISTINCT f.title
+FROM film f
+JOIN inventory i ON f.film_id = i.film_id
+WHERE f.film_id NOT IN (
+    SELECT i.film_id
+    FROM rental r
+    JOIN inventory i ON r.inventory_id = i.inventory_id
+    JOIN customer c ON r.customer_id = c.customer_id
+    JOIN address a ON c.address_id = a.address_id
+    JOIN city ci ON a.city_id = ci.city_id
+    JOIN country co ON ci.country_id = co.country_id
+    WHERE co.country = 'United States'
+)
+ORDER BY f.title;
